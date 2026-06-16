@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Premium Expense Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Expense Tracker</h1>
+    <p>Manage your finances with ease</p>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌙</button>
+  </header>
+
+  <div class="balance-card" id="balanceCard">
+    <div class="balance-label">Total Balance</div>
+    <div class="balance-amount zero" id="balanceAmt">₹0.00</div>
+  </div>
+
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="summary-icon inc">↓</div>
+      <div class="summary-info">
+        <div class="summary-label">Income</div>
+        <div class="summary-value inc" id="totalIncome">₹0.00</div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon exp">↑</div>
+      <div class="summary-info">
+        <div class="summary-label">Expenses</div>
+        <div class="summary-value exp" id="totalExpense">₹0.00</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-title">Add New Transaction</div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label for="txLabel">Description</label>
+        <input type="text" id="txLabel" placeholder="e.g. Netflix Subscription" maxlength="60" autocomplete="off" />
+      </div>
+      <div class="form-group">
+        <label for="txAmount">Amount (₹)</label>
+        <input type="number" id="txAmount" placeholder="0.00" min="0.01" step="0.01" />
+      </div>
+      <div class="form-group">
+        <label for="txDate">Date</label>
+        <input type="date" id="txDate" />
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="txCategory">
+          <option value="Food">Food & Dining</option>
+          <option value="Transport">Transportation</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Bills">Bills & Utilities</option>
+          <option value="Health">Health & Fitness</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Salary">Salary / Income</option>
+          <option value="Investment">Investments</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Transaction Type</label>
+        <div class="type-toggle">
+          <button class="type-btn expense active" id="btnExpense" onclick="setType('expense')">Expense</button>
+          <button class="type-btn income" id="btnIncome" onclick="setType('income')">Income</button>
+        </div>
+      </div>
+    </div>
+    <button class="add-btn" onclick="addTransaction()">Add Transaction</button>
+  </div>
+
+  <div class="section-header">
+    <div class="section-title">Recent Transactions</div>
+    <button class="export-btn" onclick="exportCSV()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      Export
+    </button>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" onclick="setFilter('expense', this)">Expenses</button>
+    <button class="filter-btn" onclick="setFilter('income', this)">Income</button>
+    <button class="filter-btn" onclick="setFilter('week', this)">This Week</button>
+    <button class="filter-btn" onclick="setFilter('month', this)">This Month</button>
+  </div>
+  <div class="tx-list" id="txList"></div>
+
+  <div class="chart-card" id="chartSection" style="display:none">
+    <div class="section-title" style="margin-bottom:1.5rem">Spending Overview</div>
+    <canvas id="catChart"></canvas>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
